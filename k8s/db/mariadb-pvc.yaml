@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pvc
+spec:
+  #storageClassName: default
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maria-db-depl
+spec:
+  selector:
+    matchLabels:
+      app: maria-db
+  template:
+    metadata:
+      labels:
+        app: maria-db
+    spec:
+      volumes:
+        - name: maria-db-volume
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+      containers:
+      - name: maria-db
+        image: mariadb
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 3306
+        env:
+          - name: MARIADB_ROOT_PASSWORD
+            value: SuperSecurePassword
+          - name: MARIADB_DATABASE
+            value: todo
+        volumeMounts:
+          - name: maria-db-volume
+            mountPath: /var/lib/mysql
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: maria-db
+  ports:
+  - port: 3306
+    targetPort: 3306

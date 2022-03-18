@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: todo-backend-v1
+  labels:
+    app: todo-backend-v1
+spec:
+  containers:
+  - name: todo-backend-v1
+    image: thetkpark/gdsc-basic-k8s-todo-server:v1
+    resources:
+      limits:
+        memory: "32Mi"
+        cpu: "20m"
+    ports:
+      - containerPort: 5050
