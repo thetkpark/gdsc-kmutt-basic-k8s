@@ -73,7 +73,7 @@ func main() {
 		return ctx.JSON(fiber.Map{
 			"message":   "pong",
 			"timestamp": time.Now(),
-			"version":   1,
+			"version":   2,
 		})
 	})
 
@@ -84,7 +84,7 @@ func main() {
 
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
-	logger.Info("Version 1")
+	logger.Info("Version 2")
 	// Start listening the request
 	if err := app.Listen(":5050"); err != nil {
 		logger.Errorw("Failed to start listening the request", "error", err.Error())
