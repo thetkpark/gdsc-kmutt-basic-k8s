@@ -1,0 +1,95 @@
+basePath: /
+definitions:
+  todo.ReqBodyTodo:
+    properties:
+      finished:
+        type: boolean
+      name:
+        type: string
+    type: object
+  todo.Todo:
+    properties:
+      finished:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a exmaple of Todo API for K8S traning
+  title: Todo API
+  version: "1.0"
+paths:
+  /api/todo:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Todo to create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/todo.ReqBodyTodo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The created todo
+          schema:
+            $ref: '#/definitions/todo.Todo'
+      summary: Create todo
+      tags:
+      - todo
+  /api/todo/{id}:
+    delete:
+      parameters:
+      - description: id of todo to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The deleted todo
+          schema:
+            $ref: '#/definitions/todo.Todo'
+      summary: Delete todo
+      tags:
+      - todo
+    patch:
+      parameters:
+      - description: id of todo to finish
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The updated todo
+          schema:
+            $ref: '#/definitions/todo.Todo'
+      summary: Finish todo
+      tags:
+      - todo
+  /api/todos:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of all todos
+          schema:
+            items:
+              $ref: '#/definitions/todo.Todo'
+            type: array
+      summary: List todo
+      tags:
+      - todo
+swagger: "2.0"
