@@ -12,6 +12,7 @@ spec:
       labels:
         app: todo-backend
     spec:
+      restartPolicy: Always
       containers:
       - name: backend-depl
         image: thetkpark/gdsc-basic-k8s-todo-server:v1
@@ -21,14 +22,3 @@ spec:
             cpu: "20m"
         ports:
         - containerPort: 5050
-        env:
-          - name: DB_HOST
-            value: mariadb-srv
-          - name: DB_PORT
-            value: "3306"
-          - name: DB_USER
-            value: root
-          - name: DB_PASSWORD
-            value: SuperSecurePassword
-          - name: DB_DATABASE
-            value: todo
