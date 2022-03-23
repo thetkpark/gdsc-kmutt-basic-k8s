@@ -4,6 +4,7 @@ COPY ./package.json ./
 COPY ./yarn.lock ./
 RUN yarn
 COPY . .
+ENV REACT_APP_API_BASEURL=/api
 RUN yarn build
 
 FROM nginx
