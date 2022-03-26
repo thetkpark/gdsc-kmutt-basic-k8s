@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maria-db-deployment
+spec:
+  selector:
+    matchLabels:
+      app: todo-maria-db
+  template:
+    metadata:
+      labels:
+        app: todo-maria-db
+    spec:
+      volumes:
+        - name: mariadb-volume
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+      containers:
+      - name: maria-db-deployment
+        image: mariadb
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 3306
+        env:
+          - name: MARIADB_ROOT_PASSWORD
+            value: SuperSecurePassword
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: todo-app-secret
+            #     key: DB_PASSWORD
+          - name: MARIADB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: todo-app-configmap
+                key: DB_DATABASE
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mariadb-volume
